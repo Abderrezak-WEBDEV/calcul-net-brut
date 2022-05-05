@@ -1,31 +1,43 @@
-// coposant racine
+// composant racine
 const RootComponent = {
+  //data proporty
   data() {
     return {
-      netannuel: 0,
-      brutannuel: 0,
-      cadre: false,
-      brutmensuel: 0,
+      annuelsalarybrut: 0, //salaire brut
+      iscadre: false, //statut
     };
   },
   methods: {
-    annuelNet(e) {
-      this.netannuel = e.target.value;
-      this.brutannuel = e.target.value;
-      this.brutmensuel = e.target.value;
+    setannuelsalarybrut(e) {
+      // modification de la valeur de salaire but annuel
+      this.annuelsalarybrut = e.target.value;
     },
     // changement statu cadre ou non cadre
-    cadre(e) {
-      this.cadre = e.target.checked;
+    setcadre(e) {
+      this.iscadre = e.target.checked;
     },
   },
-  //   propreite caclculer
+  //   proprietes caclculées
   compuned: {
-    netannuel() {
+    //salaire net annuel
+    annuelsalarynet() {
       if (this.cadre === true) {
-        return this.brutannuel * 0, 75;
+        return this.brutannuel * 0.75;
       }
-      return this.brutannuel * 0, 78;
+      return this.brutannuel * 0.78;
+    },
+
+    //salaire mensuel brut
+
+    mensuelbrut() {
+      return this.brutannuel / 12;
+    },
+    // salaire mensuel net
+    mensuelnet() {
+      if (this.cadre) {
+        return this.mensuelbrut * 0.75;
+      }
+      return this.mensuelbrut * 0.78;
     },
   },
   template: `
@@ -37,17 +49,17 @@ const RootComponent = {
         </tr>
         <tr>
             <td>Annuel</td>
-            <td>Salaire brut <input type="number" @input = "annuelNet"/>€</td>
-            <td>{{netannuel}}€</td>
+            <td>Salaire brut <input type="number" @input = "setannuelsalarybrutt!"/>€</td>
+            <td>{{brutannuel}}€</td>
         </tr>
         <tr>
             <td>Mensuel</td>
             <td>{{brutmensuel}}€</td>
-            <td>{{brutannuel}}€</td>
+            <td>{{annuelnet}}€</td>
         </tr>
         </table>
 
-        <input type="checkbox" />
+        <input  id= "cadre" type="checkbox" @change="setcadre"/>
         <label for="label">cadre</label>
     <table>
     `,
